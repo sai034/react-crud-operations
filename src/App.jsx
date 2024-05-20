@@ -1,7 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import axios from 'axios';
+import { Table } from 'antd';
+
+
+const columns = [
+  {
+    title: 'Title',
+    dataIndex: 'title',
+    key: 'title',
+  },
+  {
+    title: 'Brand',
+    dataIndex: 'brand',
+    key: 'brand',
+  },
+  {
+    title: 'Description',
+    dataIndex: 'description',
+    key: 'description',
+  },
+];
+
+
+
+
 function App() {
+const [ products, setProducts ] = useState([]);
 
   // Renders components twice because React.StrictMode is on 
   // StrictMode renders components twice(on dev but not in production) in order to detect any problems with the code
@@ -20,6 +45,7 @@ function App() {
     try {
       const GetAllProductsResponse = await axios.get("https://dummyjson.com/products") 
       console.log({GetAllProductsResponse})
+      setProducts(GetAllProductsResponse.data.products)
     } catch (error) {
       console.log(error)
     }
@@ -85,7 +111,10 @@ function App() {
 
   return (
     <div className="App">
-      
+      <Table dataSource={products} columns={columns} />;
+      <div>
+        <span ><b>Total count of Products: {products.length}</b></span>
+      </div>
     </div>
   );
 }
